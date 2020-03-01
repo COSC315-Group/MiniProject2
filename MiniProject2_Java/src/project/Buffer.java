@@ -14,25 +14,34 @@ public class Buffer {
         endPointer = 0;
     }
 
-    public synchronized void addJob(Job job) throws InterruptedException {
-        while(jobs[endPointer]!=null){
-            // If buffer is full, wait
-            wait();
+    public synchronized void addJob(Job job) {
+        try {
+            while (jobs[endPointer] != null) {
+                // If buffer is full, wait
+                wait();
+            }
+            jobs[endPointer] = job;
+            endPointer = (endPointer + 1) % maxBufferSize;
+            notifyAll();
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
         }
-        jobs[endPointer] = job;
-        endPointer = (endPointer+1)%maxBufferSize;
-        notifyAll();
     }
-    public synchronized Job removeJob() throws InterruptedException {
-        while(jobs[startPointer]==null){
-            // If buffer is empty, wait
-            wait();
+    public synchronized Job removeJob() {
+        try {
+            while (jobs[startPointer] == null) {
+                // If buffer is empty, wait
+                wait();
+            }
+            Job output = jobs[startPointer];
+            jobs[startPointer] = null;
+            startPointer = (startPointer + 1) % maxBufferSize;
+            notifyAll();
+            return output;
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+            return new Job().setId(-1).setLength(0); // Default error job
         }
-        Job output = jobs[startPointer];
-        jobs[startPointer] = null;
-        startPointer = (startPointer+1)%maxBufferSize;
-        notifyAll();
-        return output;
     }
 
 }
