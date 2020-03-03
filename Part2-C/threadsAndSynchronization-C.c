@@ -16,11 +16,18 @@ struct Job{
     int length;
 }
 
+struct threadArgs{
+    int threadId;
+    struct Job buffer[];
+}
+
 void *Producer(void, *threadid){
     int nextId = 0;
     while(1){
         sem_wait(&empty);
-        Job nextJob;
+        struct Job nextJob;
+        nextJob.id = nextId++;
+        nextJob.length = 1;
         requestQ(); /*request ID increases sequentially and have a random reuqest length*/
         sem_post(&full);
         sem_post(&requestQMutex);
@@ -49,11 +56,13 @@ void *Consumer(void, *threadid){
 
 
 int main (int argc, char *argv[]){
+    int N = 5;
+    int M = 4;
     pthread_t producer;
     pthread_t threads[N]; /*Number of Consumers/Slaves threads*/
     
     int requestLengthMax = M; /*Max request length*/
-    int requestQ[N]; /*Request queue of buffer size N*/
+    struct Job requestQ[N]; /*Request queue of buffer size N*/
 
     sem_t requestQMutex;
     sem_t full;
@@ -74,7 +83,7 @@ int main (int argc, char *argv[]){
             exit(-1)
         }
     }
-    p = pthread_create(producer, Null, Producer, void *);
+    p = pthread_create(producer, Null, Producer, (void *)requestQ);
 }
 
 
