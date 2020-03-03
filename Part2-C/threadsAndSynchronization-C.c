@@ -10,16 +10,21 @@
 use the pthread flag with gcc to compile this code
 ~$ gcc -pthread producer_consumer.c -o producer_consumer
 */
+
+struct Job{
+    int id;
+    int length;
+}
+
 void *Producer(void, *threadid){
+    int nextId = 0;
     while(1){
         sem_wait(&empty);
-        sem_wait(&requestQMutex);
-        sleep(1); /*Sleep for a random short duration*/ 
-        if(requestQ is not full){
-            requestQ(); /*request ID increases sequentially and have a random reuqest length*/
-        }
-        sem_post(full;
-        sem_post(requestQMutex);
+        Job nextJob;
+        requestQ(); /*request ID increases sequentially and have a random reuqest length*/
+        sem_post(&full);
+        sem_post(&requestQMutex);
+        sleep(1); /*Sleep for a random short duration*/
     }
     
 
