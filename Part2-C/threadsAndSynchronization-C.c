@@ -41,7 +41,7 @@ void *Producer(struct Buffer *buffer){
         nextJob.id = nextId++;
         nextJob.length = 2; //CHANGE
 	sem_wait(&mutex);
-	printf("\nProducer: Created job ID %d of length %d seconds at time ",nextJob.id,nextJob.length);
+	printf("\nProducer: Created job ID %d of length %d seconds at time %s",nextJob.id,nextJob.length,asctime(localtime(NULL));
         buffer->buffer[buffer->endPointer] = nextJob; /*request ID increases sequentially and have a random request length*/
 	buffer->endPointer = (buffer->endPointer + 1)%buffer->length;
         sem_post(&full);
