@@ -33,12 +33,13 @@ struct Buffer{
 };
 
 void *Producer(struct Buffer *buffer){
+    printf("\nproducer created");
     int nextId = 0;
     while(1){
         sem_wait(&empty);
         struct Job nextJob;
         nextJob.id = nextId++;
-        nextJob.length = 1; //CHANGE
+        nextJob.length = 2; //CHANGE
 	sem_wait(&mutex);
 	printf("\nProducer: Created job ID %d of length %d seconds at time ",nextJob.id,nextJob.length);
         buffer->buffer[buffer->endPointer] = nextJob; /*request ID increases sequentially and have a random request length*/
@@ -56,6 +57,7 @@ void *Producer(struct Buffer *buffer){
 
 
 void *Consumer(struct threadArgs *thread){
+    printf("\nconsumer %d created",thread->threadId);
     struct Job nullJob;
     nullJob.id = -1;
     while(1){
@@ -67,7 +69,7 @@ void *Consumer(struct threadArgs *thread){
 	sem_post(&mutex);
         printf("\nConsumer %d: assigned job ID %d of length %d seconds at time ", thread->threadId, currentJob.id, currentJob.length);
         sleep(currentJob.length); /*Sleep for length of request length*/
-	printf("\nConsumer %d: completed job ID %d at time ",thread->threadId, currentJob.length);
+	printf("\nConsumer %d: completed job ID %d at time ",thread->threadId, currentJob.id);
         sem_post(&empty);
     }
 }
@@ -90,24 +92,26 @@ int main (int argc, char *argv[]){
     sem_init(&full, 0, 0);
     sem_init(&empty, 0, N);
 
-
-    int rc;
-    long t;
     void* status;
+    int t;
+    struct threadArgs cArgs[N];
+
     for(t=0; t<N; t++){ /*Create Consumer/Slave threads*/
-        printf("In main: creating thread %ld\n", t);
-    
+        printf("\nIn main: creating thread %d",t);
+        
 	struct threadArgs thread;
 	thread.threadId = t;
 	thread.buffer = buffer;
-        rc = pthread_create(&threads[t], NULL, (void *)*Consumer, (void *)t);
-        if(rc){
-            printf("Error; return code from pthread_create() is %d\n", rc);
-            exit(-1);
-        }
+	cArgs[t] = thread;
+        pthread_create(&threads[t], NULL, (void *)*Consumer, (void *)&cArgs[t]);
+        
+	sleep(0.2);
         
     }
-    int p = pthread_create(&producer, NULL, (void *)*Producer, (void *)1);
+
+    pthread_create(&producer, NULL, (void *)*Producer, (void *)buffer);
+    
+    sleep(10);
     pthread_join(threads[t], status);
 }
 
