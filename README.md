@@ -8,9 +8,13 @@ figures etc
 
 
 ## Getting Started/Build Instructions
-build instructions stating exactly how to compile your code on the Linux for both the Java and C/C++ implementations. Preferably, these will be in the form of Makefiles. 
+Getting started in C:
+1. Clone this repository to your local machine.
+2. Use the pthread flag with gcc to compile this code: ~$ gcc -pthread threadsAndSynchronization-C.c -o program
 
-File should contain run instructions stating exactly how to execute your compiled code on the Linux.for both the Java and C/C++ implementations. These instructions should include a description of any command line arguments your program expects or accepts. If your program prints a usage message, then it is sufficient to say how to get your program to print that message. If max request duration or producer sleep time can only be adjusted by editing your source code, those values should be global variables and you must state their locations in your code.
+Getting started in Java:
+1.
+2.
 ### Java version
 
 ### C version
