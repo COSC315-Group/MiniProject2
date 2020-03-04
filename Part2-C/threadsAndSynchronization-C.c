@@ -8,7 +8,7 @@
 
 /*
 use the pthread flag with gcc to compile this code
-~$ gcc -pthread producer_consumer.c -o producer_consumer
+~$ gcc -pthread threadsAndSynchronization-C.c -o program
 */
 
 sem_t mutex;
@@ -55,7 +55,7 @@ void *Producer(struct Buffer *buffer){
 }
 
 
-void Consumer(struct threadArgs *thread){
+void *Consumer(struct threadArgs *thread){
     struct Job nullJob;
     nullJob.id = -1;
     while(1){
@@ -70,7 +70,6 @@ void Consumer(struct threadArgs *thread){
 	printf("\nConsumer %d: completed job ID %d at time ",thread->threadId, currentJob.length);
         sem_post(&empty);
     }
-    pthread_exit(NULL);
 }
 
 
@@ -94,18 +93,22 @@ int main (int argc, char *argv[]){
 
     int rc;
     long t;
+    void* status;
     for(t=0; t<N; t++){ /*Create Consumer/Slave threads*/
         printf("In main: creating thread %ld\n", t);
+    
 	struct threadArgs thread;
 	thread.threadId = t;
 	thread.buffer = buffer;
-        rc = pthread_create(&threads[t], NULL, Consumer, &thread);
+        rc = pthread_create(&threads[t], NULL, (void *)*Consumer, (void *)t);
         if(rc){
             printf("Error; return code from pthread_create() is %d\n", rc);
             exit(-1);
         }
+        
     }
-    p = pthread_create(producer, NULL, Producer, (void *)requestQ);
+    int p = pthread_create(&producer, NULL, (void *)*Producer, (void *)1);
+    pthread_join(threads[t], status);
 }
 
 
