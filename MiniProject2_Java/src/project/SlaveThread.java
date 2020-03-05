@@ -15,11 +15,17 @@ public class SlaveThread extends Thread {
         this.slaveId = slaveId;
     }
 
+    /**
+     * Runs the slave thread, taking requests off the buffer and sleeping for their lengths.
+     */
     @Override
     public void run(){
-        while(true){
+        while(!Thread.interrupted()){
+            // Take a job off the buffer
             Job currentJob = buffer.removeJob();
             System.out.println("Consumer "+slaveId+": assigned request ID "+currentJob.getID()+", processing request for the next "+currentJob.getLength()+" seconds, current time is "+dtf.format(LocalDateTime.now()));
+
+            // Sleep for the amount of time specified in the job
             try {
                 sleep(currentJob.getLength()*1000);
             } catch (InterruptedException e) {

@@ -29,5 +29,13 @@ public class Run {
         for(SlaveThread slave : slaves){
             slave.start();
         }
+
+        // Automatically end after 30 seconds
+        try {
+            Thread.sleep(30000);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

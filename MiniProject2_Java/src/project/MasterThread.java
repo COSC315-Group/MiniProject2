@@ -18,9 +18,13 @@ public class MasterThread extends Thread {
         this.maxJobDuration = maxJobDuration;
         nextJobId = 0;
     }
+
+    /**
+     * Runs the master thread, producing requests and adding them to the buffer
+     */
     @Override
     public void run(){
-        while(true){
+        while(!Thread.interrupted()){
             //Creating job
             int length = (int) (Math.random()*maxJobDuration)+1;
             Job job = new Job().setId(nextJobId++).setLength(length);
