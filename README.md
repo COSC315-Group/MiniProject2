@@ -34,12 +34,13 @@ Add a brief discussion describing your experience implementing this problem in J
 
 ### C
 
-## If the code doesnt work
-If your implementation does not work, you should also document the problems in the README, preferably with your explanation of why it does not work and how you would solve it if you had more time.Of course, you should also comment your code. We can'tgive you credit for something we don't understand!
-
 ## Contributers
 
 * Benjamin Tisserand @UBCbent
 * Courtney Gosselin @CourtneyGosselin
 * Alex Qin @QinAlex
+
+## Acknowledgements 
+
+* [Pthreads][https://computing.llnl.gov/tutorials/pthreads/]
 
