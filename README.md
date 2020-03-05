@@ -1,10 +1,52 @@
 # MiniProject2: Threads and Synchronization 
-Outline of what we did for the assignment/summary
+	The goal of this project is to implement a multi-threaded request scheduler. Our design for this is a bounded buffer producer-consumer framework. Assume that the request queue is a circular buffer of size N (i.e., an array of size N). The method involves a single producer, which is the master thread, and N consumers, which are the slave threads. The master thread will sleep for a random short duration and produce a request. Each request has a sequentially increasing request ID and a randomly chosen request length (assign each new request a random length between 1 and M seconds). The master thread then inserts the request into the queue and goes back to sleep for a random short duration before it produces another request. Of course, if the request queue, which is a bounded buffer, is full, the master thread must wait before it can insert the request into the queue. Each slave thread can be idle or busy. When a slave thread is idle, it acts as a consumer waiting for a new request in the request queue. After it consumes a request from the queue, the slave thread will be busy for a duration that is equal to the request length for that request. The busy state of a slave thread is emulated by making the thread sleep for that duration. Upon completing the request, the slave thread goes back to idle thread and attempts to consume a pending request from the request queue. If the queue is empty, the slave thread must wait, like a consumer in the producer consumer problem.
+  
+In part 1: we implement the above problem using Java and Monitors. 
+
+In part 2: we implement the above problem using C and semaphores.
+
 
 ## Design Choices
 Explain the design of your program and how syncronization works. Keep it short and to the point.
 
 figures etc
+
+## Priortization/Planning
+The following is a breakdown of the project into a list of measurable and timed checkpoints
+  Product functionality:
+  - Use Java and Monitors to implement producer-consumer framework (Feb, 24th)
+  - Use C and semaphores to implement producer-consumer framework (Feb, 29th)
+  - Manage code structures and put comments on (Mar, 1st)
+  - Design document (Mar, 3rd)
+  - README.md (Mar, 4th) 
+
+## Contributions:
+Benjamin: @UBCbent
+* Java and C code with Logic Design
+* Planning
+* Documentation (Design document)
+* Document Editing
+
+Courtney: @CourtneyGosselin
+* Base code in C
+* Debugging/implementation of C
+* Scrum master 
+* Documentation (Design document, README)
+* Planning
+
+Alex: @QinAlex
+* Planning
+* Feedback and Testing
+* Syntax research for C and pthreads
+* Documentation (Design document)
+
+## Code Structure/Folder layout
+
+## Code Outline 
+
+### Java outline
+
+### C outline
 
 
 ## Getting Started/Build Instructions
