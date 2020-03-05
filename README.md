@@ -1,4 +1,4 @@
-# MiniProject2: Threads and Syncronization 
+# MiniProject2: Threads and Synchronization 
 Outline of what we did for the assignment/summary
 
 ## Design Choices
