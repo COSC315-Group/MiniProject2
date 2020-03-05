@@ -42,5 +42,5 @@ Add a brief discussion describing your experience implementing this problem in J
 
 ## Acknowledgements 
 
-* [Pthreads][https://computing.llnl.gov/tutorials/pthreads/]
+* [Pthreads](https://computing.llnl.gov/tutorials/pthreads/)
 
